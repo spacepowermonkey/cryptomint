@@ -6,13 +6,7 @@ WARNING: Currently in BETA! Use at your own risk!
 
 This is a framework for producing paper crypto-currency products, such as wallets and checks.
 
-
-
-## Getting Started
-The framework is controlled via environment variables:
-
-eg, `CURRENCY=DOGE COUNT=5 make wallets`
-
+![](/docs/cryptobars.jpeg)
 
 
 ## Supported Currencies

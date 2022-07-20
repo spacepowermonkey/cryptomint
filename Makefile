@@ -3,4 +3,4 @@ clean:
 	- rm -rf output/*
 
 wallets:
-	python -m main --currency $(CURRENCY) --count $(COUNT)
+	python3 -m main --currency $(CURRENCY) --count $(COUNT)
