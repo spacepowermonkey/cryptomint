@@ -1,0 +1,12 @@
+\documentclass{article}
+\usepackage[letterpaper, landscape, noheadfoot, nomarginpar, centering, margin=0.5in]{geometry}
+\usepackage{graphicx}
+
+
+\begin{document}
+\pagestyle{empty}
+\setlength{\tabcolsep}{0in}
+\setlength{\parindent}{0in}
+
+
+

@@ -1,0 +1,83 @@
+%%% NOTE NOTE-NAME-TEXT
+%%%% FRONT
+%\begin{tabular}{| p{2.5625in} | p{1.1875in} | p{2.625in} | p{0.5in} | p{3in} |}
+\begin{tabular}{p{2.5625in} p{1.1875in} p{2.625in} p{0.5in} p{3in}}
+% Panel 1, Void, Panel 2, Void, Panel 3
+%\hline
+
+\begin{center}
+
+{\Huge CURRENCY-NAME-TEXT Bar}
+
+\vspace{0.1in}
+
+\includegraphics[width=2in]{CURRENCY-LOGO-PATH}
+
+\vspace{0.1in}
+
+Address
+
+\includegraphics[width=2in]{PUBKEY-QR-PATH}
+
+\texttt{PUBKEY-TEXT}
+
+\vspace{0.1in}
+
+Generated: \today
+
+\vspace{1in}
+
+\includegraphics[width=2in]{form/imgs/spm_footer.png}
+
+\end{center}
+
+
+& & 
+
+
+\begin{center}
+
+
+
+\vspace{0.1in}
+
+\includegraphics[width=2in]{PRIVKEY-QR-PATH}
+
+{\large Secret}
+
+\texttt{PRIVKEY-TEXT}
+
+\vspace{0.2in}
+
+\includegraphics[width=1in]{CURRENCY-LOGO-PATH}
+
+\vspace{0.05in}
+
+\includegraphics[width=2in]{PUBKEY-QR-PATH}
+
+{\large Address}
+
+\texttt{PUBKEY-TEXT}
+
+\includegraphics[width=2in]{form/imgs/spm_footer.png}
+
+\end{center}
+
+
+& &
+
+
+
+% Panel 3
+
+
+
+\\
+%\hline
+\end{tabular}
+%%% END NOTE
+
+\clearpage
+
+
+

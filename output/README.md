@@ -1,0 +1,1 @@
+This folder outputs data from the process.

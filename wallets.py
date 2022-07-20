@@ -2,10 +2,10 @@ import base58
 import binascii
 import ecdsa
 import hashlib
-import qrcode
 import secrets
 from coincurve import PublicKey
 from sha3 import keccak_256
+from uuid import uuid4 as uuid
 
 
 
@@ -18,43 +18,95 @@ def make_eth_wallet():
     return (addr, priv_key)
 
 
-def make_btc_wallet():
-    priv_key = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1)
 
-    pub_key = '04' + priv_key.get_verifying_key().to_string().hex()
-    pub_key_hash = hashlib.sha256(binascii.unhexlify(pub_key)).hexdigest()
-    pub_key_net = '00' + hashlib.new('ripemd160', binascii.unhexlify(pub_key_hash)).hexdigest()
+class BitcoinWallet:
+    CURRENCY_NAME = 'Bitcoin'
+    LOGO_PATH = 'form/imgs/btc_logo.png'
 
-    pub_hash = pub_key_net
-    for i in range(2):
-        pub_hash = hashlib.sha256(binascii.unhexlify(pub_hash)).hexdigest()
-    pub_key_with_checksum = pub_key_net + pub_hash[:8]
+    def __init__(self):
+        self.name = str(uuid())
 
-    addr = base58.b58encode(binascii.unhexlify(pub_key_with_checksum))
-    return (addr, priv_key)
+        address, secret = self.make_btc_wallet()
+        self.address = address.decode('ascii')
+        self.secret = secret.to_string().hex()
+        return
+    
+    @staticmethod
+    def make_btc_wallet():
+        priv_key = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1)
+
+        pub_key = '04' + priv_key.get_verifying_key().to_string().hex()
+        pub_key_hash = hashlib.sha256(binascii.unhexlify(pub_key)).hexdigest()
+        pub_key_net = '00' + hashlib.new('ripemd160', binascii.unhexlify(pub_key_hash)).hexdigest()
+
+        pub_hash = pub_key_net
+        for i in range(2):
+            pub_hash = hashlib.sha256(binascii.unhexlify(pub_hash)).hexdigest()
+        pub_key_with_checksum = pub_key_net + pub_hash[:8]
+
+        addr = base58.b58encode(binascii.unhexlify(pub_key_with_checksum))
+        return (addr, priv_key)
 
 
 
-def render_qr(data):
-    qr_obj = qrcode.QRCode(version=1, box_size=10, border=2, error_correction=qrcode.ERROR_CORRECT_H)
-    qr_obj.add_data(data)
-    qr_obj.make()
-    return qr_obj.make_image()
+class DogecoinWallet:
+    CURRENCY_NAME = 'Dogecoin'
+    LOGO_PATH = 'form/imgs/doge_logo.png'
+
+    def __init__(self):
+        self.name = str(uuid())
+
+        address, secret = self.make_doge_wallet()
+        self.address = address.decode('ascii')
+        self.secret = secret.to_string().hex()
+        return
+    
+    @staticmethod
+    def make_doge_wallet():
+        priv_key = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1)
+
+        pub_key = '04' + priv_key.get_verifying_key().to_string().hex()
+        pub_key_hash = hashlib.sha256(binascii.unhexlify(pub_key)).hexdigest()
+        pub_key_net = '1E' + hashlib.new('ripemd160', binascii.unhexlify(pub_key_hash)).hexdigest()
+
+        pub_hash = pub_key_net
+        for i in range(2):
+            pub_hash = hashlib.sha256(binascii.unhexlify(pub_hash)).hexdigest()
+        pub_key_with_checksum = pub_key_net + pub_hash[:8]
+
+        addr = base58.b58encode(binascii.unhexlify(pub_key_with_checksum))
+        return (addr, priv_key)
 
 
 
-def main():
-    addr, priv_key = make_btc_wallet()
+class EthereumWallet:
+    CURRENCY_NAME = 'Ethereum'
+    LOGO_PATH = 'form/imgs/eth_logo.png'
 
-    addr_qr = render_qr(addr)
-    addr_qr.save("address.png")
+    def __init__(self):
+        self.name = str(uuid())
 
-    pk_qr = render_qr(priv_key)
-    pk_qr.save("privkey.png")
+        address, secret = self.make_eth_wallet()
+        self.address = address.hex()
+        self.secret = secret.hex()
+        return
+    
+    @staticmethod
+    def make_eth_wallet():
+        # Instructions from: https://www.arthurkoziel.com/generating-ethereum-addresses-in-python/
+        priv_key = keccak_256(secrets.token_bytes(32)).digest()
 
-    bank_qr = render_qr("www.spacepowermonkey.com")
-    bank_qr.save("bankkey.png")
-    return
+        pub_key = PublicKey.from_valid_secret(priv_key).format(compressed=False)[1:]
+        addr = keccak_256(pub_key).digest()[-20:]
+        return (addr, priv_key)
 
-if __name__ == '__main__':
-    main()
+
+
+WALLET_TYPES = {
+    'BTC' : BitcoinWallet,
+    'DOGE' : DogecoinWallet,
+    'ETH' : EthereumWallet
+}
+
+def wallet_from_symbol(symbol):
+    return WALLET_TYPES[symbol]()
